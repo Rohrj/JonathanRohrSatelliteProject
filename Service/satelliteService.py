@@ -58,6 +58,3 @@ def satelliteService(input):
 
         session.close()
     #print("Completed session")
-
-if __name__ == '__main__':
-    satelliteService(sys.argv[1])

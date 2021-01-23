@@ -11,6 +11,3 @@ def createDbConnection(db_file):
         print(e)
 
     return conn
-
-if __name__ == '__main__':
-    createDbConnection(r"Database/SatelliteInfo.db")

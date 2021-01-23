@@ -21,10 +21,7 @@ def main(argv):
         for x in argv:
             satelliteService(x)
 
-            SatInst = SAT(None, None, None, None)
-            LocInst = LOC(None, None, None, None, None, None, None, None, None, None, None, None, None)
-
-            SatInst, LocInst = TLEParser(SatInst, LocInst)
+            SatInst, LocInst = TLEParser()
 
             databaseService(SatInst, LocInst)
 

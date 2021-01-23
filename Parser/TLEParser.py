@@ -6,9 +6,13 @@ import math
 from Data.SAT import SAT
 from Data.LOC import LOC
 
-def TLEParser(SatInst, LocInst):
+def retrieveTleString():
     with open("Service/starlink-track.txt", "r") as file:
         tle_string = file.read()
+    return tle_string
+
+def retrieveSatellite():
+    tle_string = retrieveTleString()
     tle_lines = tle_string.strip().splitlines()
 
     try:
@@ -22,6 +26,11 @@ def TLEParser(SatInst, LocInst):
     except Exception as e:
         print("Unable to decode TLE data. Make the sure TLE data is formatted correctly." + e)
         exit(1)
+    
+    return satellite
+
+def TLEParser():
+    satellite = retrieveSatellite()
 
     catalog_num = satellite.model.satnum
 
@@ -64,6 +73,3 @@ def TLEParser(SatInst, LocInst):
                 eccentricity, arg_perigree, mean_anomaly, mean_motion, rev_num_at_epoch)
 
     return SatInst, LocInst
-
-if __name__ == '__main__':
-    TLEParser(sys.argv[0], sys.argv[1])
