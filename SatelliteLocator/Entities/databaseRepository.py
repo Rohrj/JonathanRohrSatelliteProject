@@ -13,6 +13,17 @@ from Database import base
 from Data.SAT import SAT
 from Data.LOC import LOC
 
+def createDbConnection(db_file):
+    """ create a database connection to a SQLite database """
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+        return conn
+    except Error as e:
+        print(e)
+
+    return conn
+
 class SATRepository:
     def __init__(self):
         # ACTION REQUIRED FOR YOU:
@@ -38,13 +49,13 @@ class SATRepository:
         Session = sessionmaker(bind=engine)
         self.session = Session()
     
-    def get_by_id(self, catalog_number):
-        return session.query(SAT.catalog_number).filter(SAT.catalog_number == catalog_number).first()
+    def get_sat_by_id(self, catalog_number):
+        return self.session.query(SAT.catalog_number).filter(SAT.catalog_number == catalog_number).first()
 
     def create_sat(self, entity):
-        session.add(entity)
-        session.commit()
+        self.session.add(entity)
+        self.session.commit()
 
     def create_loc(self, entity):
-        session.add(entity)
-        session.commit()
+        self.session.add(entity)
+        self.session.commit()

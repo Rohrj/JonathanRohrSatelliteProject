@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 
 from Service.satelliteService import satelliteService
 from Parser.TLEParser import TLEParser
-from Database.databaseService import databaseService
+from Database import databaseService
 from Database import base
 from Data.SAT import SAT
 from Data.LOC import LOC
@@ -18,12 +18,15 @@ def main(argv):
         print("Usage: main.py <NORAD ID 1> <NORAD ID 2> ...")
         sys.exit(2)
     else:
+        sat_repo = databaseService.SATRepository()
         for x in argv:
             satelliteService(x)
 
             SatInst, LocInst = TLEParser()
 
-            databaseService(SatInst, LocInst)
+            if sat_repo.get_by_id(SatInst.catalog_number) is None:
+                sat_repo.create_sat(SatInst)
+            sat_repo.create_loc(LocInst)
 
 if __name__ == '__main__':
     main(sys.argv[1:])

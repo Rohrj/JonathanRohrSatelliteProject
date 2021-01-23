@@ -2,7 +2,7 @@ import sqlite3
 from sqlite3 import Error
 import configparser
 
-from Database.createDbConnection import createDbConnection
+from Database.databaseService import createDbConnection
 
 def createDatabase():
 
