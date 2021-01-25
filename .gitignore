@@ -1,0 +1,17 @@
+.vscode/settings.json
+bin/__pycache__/__init__.cpython-39.pyc
+bin/__pycache__/satelliteRecorder.cpython-39.pyc
+SatelliteLocator/__pycache__/__init__.cpython-39.pyc
+SatelliteLocator/__pycache__/errorHandling.cpython-39.pyc
+SatelliteLocator/__pycache__/satelliteService.cpython-39.pyc
+SatelliteLocator/__pycache__/TLEParser.cpython-39.pyc
+SatelliteLocator/Database/__pycache__/__init__.cpython-39.pyc
+SatelliteLocator/Database/__pycache__/base.cpython-39.pyc
+SatelliteLocator/Database/__pycache__/createDatabase.cpython-39.pyc
+SatelliteLocator/Entities/__pycache__/__init__.cpython-39.pyc
+SatelliteLocator/Entities/__pycache__/databaseRepository.cpython-39.pyc
+SatelliteLocator/Entities/__pycache__/LOC.cpython-39.pyc
+SatelliteLocator/Entities/__pycache__/SAT.cpython-39.pyc
+Tests/__pycache__/__init__.cpython-39.pyc
+Tests/__pycache__/test_satelliteRecorder.cpython-39-pytest-6.2.1.pyc
+Tests/__pycache__/test_TLEParser.cpython-39-pytest-6.2.1.pyc
