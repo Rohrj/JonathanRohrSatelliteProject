@@ -1,13 +1,19 @@
-import skyfield.api
-import skyfield.elementslib
 import sys
 import math
 
-from Data.SAT import SAT
-from Data.LOC import LOC
+import skyfield.api
+import skyfield.elementslib
+import configparser
+
+from SatelliteLocator.Entities.SAT import SAT
+from SatelliteLocator.Entities.LOC import LOC
 
 def retrieveTleString():
-    with open("Service/starlink-track.txt", "r") as file:
+    config = configparser.ConfigParser()
+    config.read("SatelliteLocator/SLTrack.ini")
+    configOut = config.get("configuration","output")
+
+    with open(configOut, "r") as file:
         tle_string = file.read()
     return tle_string
 
@@ -32,44 +38,30 @@ def retrieveSatellite():
 def TLEParser():
     satellite = retrieveSatellite()
 
-    catalog_num = satellite.model.satnum
-
-    classification = satellite.model.classification
-
     if int(satellite.model.intldesg[0:2]) >= 57:
         launch_year = int("19" + satellite.model.intldesg[0:2])
     else:
         launch_year = int("20" + satellite.model.intldesg[0:2])
-
-    launch_num_and_des = satellite.model.intldesg[2:]
-
-    date = satellite.epoch.utc_iso()
-
+    
     xpdotp = 1440.0 / (2.0 * math.pi)
-    first_deriv_mean = satellite.model.ndot * xpdotp * 1440.0
-    second_deriv_mean = satellite.model.nddot * xpdotp * 1440.0 * 1440.0
-
-    drag = satellite.model.bstar
-
-    elem_set_num = satellite.model.elnum
-
-    inclination = math.degrees(satellite.model.inclo)
-
-    right_asc = math.degrees(satellite.model.nodeo)
-
-    eccentricity = satellite.model.ecco
-
-    arg_perigree = math.degrees(satellite.model.argpo)
-
-    mean_anomaly = math.degrees(satellite.model.mo)
-
-    mean_motion = (satellite.model.no_kozai * 60 * 24) / (2 * math.pi)
-
-    rev_num_at_epoch = satellite.model.revnum
     
-    SatInst = SAT(catalog_num, classification, launch_year, launch_num_and_des)
+    SatInst = SAT(catalogNumber = satellite.model.satnum, 
+                    classification = satellite.model.classification, 
+                    launchYear = launch_year, 
+                    launchNumAndDesignator = satellite.model.intldesg[2:])
     
-    LocInst = LOC(catalog_num, date, first_deriv_mean, second_deriv_mean, drag, elem_set_num, inclination, right_asc, 
-                eccentricity, arg_perigree, mean_anomaly, mean_motion, rev_num_at_epoch)
+    LocInst = LOC(catalogNumber = satellite.model.satnum, 
+                    date = satellite.epoch.utc_iso(), 
+                    firstDerivMean = satellite.model.ndot * xpdotp * 1440.0, 
+                    secondDerivMean = satellite.model.nddot * xpdotp * 1440.0 * 1440.0, 
+                    dragTerm = satellite.model.bstar, 
+                    elemSetNumber = satellite.model.elnum, 
+                    inclination = math.degrees(satellite.model.inclo), 
+                    rightAsc = math.degrees(satellite.model.nodeo), 
+                    eccentricity = satellite.model.ecco, 
+                    argPerigree = math.degrees(satellite.model.argpo), 
+                    meanAnomaly = math.degrees(satellite.model.mo), 
+                    meanMotion = (satellite.model.no_kozai * 60 * 24) / (2 * math.pi), 
+                    revNumberAtEpoch = satellite.model.revnum)
 
     return SatInst, LocInst

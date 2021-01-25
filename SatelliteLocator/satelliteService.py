@@ -3,7 +3,7 @@ import sys
 import requests
 import configparser
 
-from Service import errorHandling
+from SatelliteLocator import errorHandling
 
 def satelliteService(input):
 
@@ -31,7 +31,7 @@ def satelliteService(input):
 
     # Use configparser package to pull in the ini file
     config = configparser.ConfigParser()
-    config.read("Service/SLTrack.ini")
+    config.read("SatelliteLocator/SLTrack.ini")
     configUsr = config.get("configuration","username")
     configPwd = config.get("configuration","password")
     configOut = config.get("configuration","output")

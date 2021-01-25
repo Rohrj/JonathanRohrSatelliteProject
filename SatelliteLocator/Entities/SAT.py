@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from Database.base import Base
+from SatelliteLocator.Database.base import Base
 
 #Class for satellite
 class SAT(Base):

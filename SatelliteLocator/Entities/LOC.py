@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, Float, String, ForeignKey, Text
 from sqlalchemy.orm import relationship
 
-from Database.base import Base
+from SatelliteLocator.Database.base import Base
 
 #Class for satellite records
 class LOC(Base):

@@ -2,7 +2,16 @@ import sqlite3
 from sqlite3 import Error
 import configparser
 
-from Database.databaseService import createDbConnection
+def createDbConnection(db_file):
+    """ create a database connection to a SQLite database """
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+        return conn
+    except Error as e:
+        print(e)
+
+    return conn
 
 def createDatabase():
 
@@ -18,7 +27,7 @@ def createDatabase():
 
     # Use configparser package to pull in the ini file
     config = configparser.ConfigParser()
-    config.read("Database/DB.ini")
+    config.read("SatelliteLocator/Database/DB.ini")
     db_file = config.get("database_configuration","db_file")
     sql_file = config.get("database_configuration","sql_file")
 

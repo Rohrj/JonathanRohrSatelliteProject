@@ -8,21 +8,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import exists
 
-from Database.createDatabase import createDatabase
-from Database import base
-from Data.SAT import SAT
-from Data.LOC import LOC
-
-def createDbConnection(db_file):
-    """ create a database connection to a SQLite database """
-    conn = None
-    try:
-        conn = sqlite3.connect(db_file)
-        return conn
-    except Error as e:
-        print(e)
-
-    return conn
+from SatelliteLocator.Database.createDatabase import createDatabase
+from SatelliteLocator.Database import base
+from SatelliteLocator.Entities.SAT import SAT
+from SatelliteLocator.Entities.LOC import LOC
 
 class SATRepository:
     def __init__(self):
@@ -38,7 +27,7 @@ class SATRepository:
 
         # Use configparser package to pull in the ini file
         config = configparser.ConfigParser()
-        config.read("Database/DB.ini")
+        config.read("SatelliteLocator/Database/DB.ini")
         db_file = config.get("database_configuration","db_file")
         
         if not os.path.exists(db_file) or os.stat(db_file).st_size == 0:
@@ -51,6 +40,9 @@ class SATRepository:
     
     def get_sat_by_id(self, catalog_number):
         return self.session.query(SAT.catalog_number).filter(SAT.catalog_number == catalog_number).first()
+
+    def get_loc_by_date(self, sat_id, date):
+        return self.session.query(LOC.sat_id).filter(LOC.sat_id == sat_id and LOC.date == date).first()
 
     def create_sat(self, entity):
         self.session.add(entity)
